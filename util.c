@@ -73,6 +73,22 @@ void print_thing(WINDOW *menu_win, int x, int y, char thing){
 	wmove(menu_win, y, x);
 }
 
+void print_beings(WINDOW *menu_win, player_t me, enemy_t * enemies, int numfoes){
+	int i;
+	// Print Enemies
+	attron(COLOR_PAIR(2));
+	for(i=0;i<numfoes;i++){
+		print_thing(menu_win, enemies[i].x, enemies[i].y,'E');
+	}
+
+	// Print Player
+	attron(COLOR_PAIR(3));
+	print_thing(menu_win, me.x, me.y,'@');
+	attron(COLOR_PAIR(1));
+
+	refresh();
+}
+
 int init_colors(){
 	// Initialize Colors
 	if(has_colors() == FALSE)
@@ -91,18 +107,3 @@ int init_colors(){
 	return 0;
 }
 
-void print_beings(WINDOW *menu_win, player_t me, enemy_t * enemies, int numfoes){
-	int i;
-	// Print Enemies
-	attron(COLOR_PAIR(2));
-	for(i=0;i<numfoes;i++){
-		print_thing(menu_win, enemies[i].x, enemies[i].y,'E');
-	}
-
-	// Print Player
-	attron(COLOR_PAIR(3));
-	print_thing(menu_win, me.x, me.y,'@');
-	attron(COLOR_PAIR(1));
-
-	refresh();
-}
