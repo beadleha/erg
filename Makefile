@@ -1,4 +1,4 @@
 all:
-	gcc main.c util.c -lncurses -o erg
+	gcc main.c enemies.c level.c drawutil.c player.c -lncurses -o erg
 clean:
 	rm erg

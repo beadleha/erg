@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <ncurses.h>
-#include "util.h"
-
-#define WIDTH 80
-#define HEIGHT 24
-#define MAXFOES 3
+#include "drawutil.h"
+#include "enemies.h"
+#include "level.h"
 
 int main(){
 	thing_t level_map[WIDTH][HEIGHT];
