@@ -30,11 +30,11 @@ typedef struct{
 void gen_map(thing_t level_map[WIDTH][HEIGHT]);
 int gen_enemies(thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES]);
 
-void move_enemies(WINDOW *menu_win, thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES], int numfoes);
+void move_enemies(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES], int numfoes);
 
-void print_map(WINDOW *menu_win, thing_t level_map[WIDTH][HEIGHT]);
-void print_thing(WINDOW *menu_win, int x, int y, char thing);
-void print_beings(WINDOW *menu_win, player_t me, enemy_t * enemies, int numfoes);
+void print_map(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT]);
+void print_thing(WINDOW *erg_win, int x, int y, char thing);
+void print_beings(WINDOW *erg_win, player_t me, enemy_t * enemies, int numfoes);
 
 int init_colors();
 
