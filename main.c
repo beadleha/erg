@@ -36,6 +36,7 @@ int main(){
 	numfoes = gen_enemies(level_map, enemies); // Generate enemies
 	print_map(menu_win, level_map);
 
+	mvprintw(24, 1, "Press q to quit"); // This needs a refresh() before it displays
 	print_beings(menu_win, me, enemies, numfoes);
 
 	while(1){	
