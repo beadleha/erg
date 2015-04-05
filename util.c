@@ -34,18 +34,23 @@ int gen_enemies(thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES]){
 	return 1;
 }
 
-// Remember to change whichfoe AND type
-// This only updates the map.
-// The enemy still needs to be printed
+// This only updates the map, the enemy still needs to be printed
 void move_enemies(WINDOW *menu_win, thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES], int numfoes){
 	int i;
 	for(i=0;i<numfoes;i++){
 		if(level_map[enemies[i].x+1][enemies[i].y].type == EMPTY){
+
+			// Rid old location of enemy data
 			level_map[enemies[i].x][enemies[i].y].type = EMPTY;
-			// Clear old location
+			level_map[enemies[i].x][enemies[i].y].whichfoe = NULL;
+
+			// Visually clear old location
 			print_thing(menu_win, enemies[i].x, enemies[i].y, ' ');
 			enemies[i].x++;
+
+			// Add enemy data to new location
 			level_map[enemies[i].x][enemies[i].y].type = ENEMY;
+			level_map[enemies[i].x][enemies[i].y].whichfoe = &enemies[i];
 		}
 	}
 }
