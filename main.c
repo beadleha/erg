@@ -12,7 +12,7 @@ int main(){
 	player_t me;
 
 	WINDOW *menu_win;
-	int c,i;
+	int c;
 	int numfoes=0;
 
 	me.x = 1;
@@ -26,19 +26,20 @@ int main(){
 	noecho();
 	cbreak();
 
+	init_colors();
+
+	// ncurses setup stuff
 	menu_win = newwin(HEIGHT, WIDTH, 0, 0);
 	keypad(menu_win, TRUE);
 
 	gen_map(level_map); // Generate a level
 	numfoes = gen_enemies(level_map, enemies); // Generate enemies
 	print_map(menu_win, level_map);
-	for(i=0;i<numfoes;i++){
-		print_thing(menu_win, enemies[i].x, enemies[i].y,'E');
-	}
-	print_thing(menu_win, me.x, me.y,'@');
-	refresh();
-	while(1)
-	{	c = wgetch(menu_win);
+
+	print_beings(menu_win, me, enemies, numfoes);
+
+	while(1){	
+		c = wgetch(menu_win);
 		switch(c)
 		{	case KEY_UP:
 				if((level_map[me.x][me.y-1].type == EMPTY)
@@ -74,11 +75,10 @@ int main(){
 				endwin();
 				return(0);
 		}
-		for(i=0;i<numfoes;i++){
-			print_thing(menu_win, enemies[i].x, enemies[i].y,'E');
-		}
-		print_thing(menu_win, me.x, me.y,'@');
-		refresh();
+		// Enemies move
+		move_enemies(menu_win, level_map, enemies, numfoes);
+		//Print player and enemies
+		print_beings(menu_win, me, enemies, numfoes);
 	}	
 	clrtoeol();
 	refresh();

@@ -37,7 +37,17 @@ int gen_enemies(thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES]){
 // Remember to change whichfoe AND type
 // This only updates the map.
 // The enemy still needs to be printed
-void move_enemies(thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES]){
+void move_enemies(WINDOW *menu_win, thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES], int numfoes){
+	int i;
+	for(i=0;i<numfoes;i++){
+		if(level_map[enemies[i].x+1][enemies[i].y].type == EMPTY){
+			level_map[enemies[i].x][enemies[i].y].type = EMPTY;
+			// Clear old location
+			print_thing(menu_win, enemies[i].x, enemies[i].y, ' ');
+			enemies[i].x++;
+			level_map[enemies[i].x][enemies[i].y].type = ENEMY;
+		}
+	}
 }
 
 // Prints everything except player
@@ -63,3 +73,36 @@ void print_thing(WINDOW *menu_win, int x, int y, char thing){
 	wmove(menu_win, y, x);
 }
 
+int init_colors(){
+	// Initialize Colors
+	if(has_colors() == FALSE)
+	{	endwin();
+		printf("Your terminal does not support color\n");
+		return(1);
+	}
+	start_color();
+	init_color(COLOR_BLACK, 0, 0, 0);
+	init_color(COLOR_GREEN, 0, 1000, 0);
+	init_color(COLOR_BLUE, 0, 0, 1000);
+	init_pair(1, COLOR_GREEN, COLOR_BLACK);
+	init_pair(2, COLOR_RED, COLOR_BLACK);
+	init_pair(3, COLOR_BLUE, COLOR_BLACK);
+	attron(COLOR_PAIR(1));
+	return 0;
+}
+
+void print_beings(WINDOW *menu_win, player_t me, enemy_t * enemies, int numfoes){
+	int i;
+	// Print Enemies
+	attron(COLOR_PAIR(2));
+	for(i=0;i<numfoes;i++){
+		print_thing(menu_win, enemies[i].x, enemies[i].y,'E');
+	}
+
+	// Print Player
+	attron(COLOR_PAIR(3));
+	print_thing(menu_win, me.x, me.y,'@');
+	attron(COLOR_PAIR(1));
+
+	refresh();
+}
