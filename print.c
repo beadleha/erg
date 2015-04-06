@@ -5,9 +5,6 @@
 #include "level.h"
 #include "player.h"
 
-#define WIDTH 80
-#define HEIGHT 24
-
 // Prints everything except player
 void print_map(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT]){
 	int i,j;
