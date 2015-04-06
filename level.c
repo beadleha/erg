@@ -1,7 +1,6 @@
 #include <stdio.h>
-#include "drawutil.h"
+#include "print.h"
 #include "level.h"
-
 
 void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 	int i,j;
@@ -19,3 +18,4 @@ void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 		}
 	}
 }
+

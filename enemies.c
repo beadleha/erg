@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "drawutil.h"
+#include "print.h"
 #include "enemies.h"
 
 
@@ -35,10 +35,3 @@ void move_enemies(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT], enemy_t ene
 	}
 }
 
-void isawake(enemy_t enemies[MAXFOES],int numfoes){
-
-}
-
-void detectplayer(enemy_t enemies[MAXFOES],int numfoes){
-
-} 

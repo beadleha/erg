@@ -3,7 +3,6 @@
 
 #define MAXFOES 3
 
-
 #include <ncurses.h>
 
 typedef struct enemy_s{
@@ -19,8 +18,5 @@ int gen_enemies(thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES]);
 
 void move_enemies(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES], int numfoes);
 
-void isawake(enemy_t enemies[MAXFOES],int numfoes);
-
-void detectplayer(enemy_t enemies[MAXFOES],int numfoes); 
-
 #endif
+
