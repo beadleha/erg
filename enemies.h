@@ -4,7 +4,6 @@
 #define MAXFOES 3
 
 
-#include <ncurses.h>
 
 typedef struct enemy_s{
 	int x;
@@ -13,6 +12,7 @@ typedef struct enemy_s{
 	int health;
 }enemy_t;
 
+#include <ncurses.h>
 #include "level.h"
 
 int gen_enemies(thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES]);
