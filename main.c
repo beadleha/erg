@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <ncurses.h>
-#include "drawutil.h"
+#include "print.h"
 #include "enemies.h"
 #include "level.h"
+#include "player.h"
 
 int main(){
 	thing_t level_map[WIDTH][HEIGHT];

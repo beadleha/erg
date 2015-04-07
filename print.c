@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <ncurses.h>
-#include "drawutil.h"
+#include "print.h"
 #include "enemies.h"
 #include "level.h"
-
-#define WIDTH 80
-#define HEIGHT 24
+#include "player.h"
 
 // Prints everything except player
 void print_map(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT]){
@@ -18,16 +16,6 @@ void print_map(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT]){
 		}
 	}
 	wrefresh(erg_win);
-}
-
-// Helper to print a character at a place.
-void print_thing(WINDOW *erg_win, int x, int y, char thing){
-	char cstr[2];
-	cstr[0] = thing;
-	cstr[1] = '\0';
-	mvprintw(y, x, cstr);
-	wrefresh(erg_win);
-	wmove(erg_win, y, x);
 }
 
 void print_beings(WINDOW *erg_win, player_t me, enemy_t * enemies, int numfoes){
@@ -62,5 +50,15 @@ int init_colors(){
 	init_pair(3, COLOR_BLUE, COLOR_BLACK);
 	attron(COLOR_PAIR(1));
 	return 0;
+}
+
+// Helper to print a character at a place.
+void print_thing(WINDOW *erg_win, int x, int y, char thing){
+	char cstr[2];
+	cstr[0] = thing;
+	cstr[1] = '\0';
+	mvprintw(y, x, cstr);
+	wrefresh(erg_win);
+	wmove(erg_win, y, x);
 }
 
