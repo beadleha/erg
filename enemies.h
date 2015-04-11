@@ -1,7 +1,7 @@
 #ifndef ENEMIES_H
 #define ENEMIES_H
 
-#define MAXFOES 3
+#define MAXFOES 5
 
 typedef struct enemy_s{
 	int x;

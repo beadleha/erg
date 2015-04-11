@@ -6,14 +6,25 @@
 
 
 int gen_enemies(thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES]){
-	level_map[10][10].type = ENEMY;
-	level_map[10][10].whichfoe = &enemies[0];
-	enemies[0].x=10;
-	enemies[0].y=10;
-	enemies[0].awake=0;
-	enemies[0].health=1;
+	int i;
+	int count = 1+ (rand() % (MAXFOES-1));
+
+	for(i=0;i<count;i++){
+
+bad:
+		enemies[i].x = (rand()%WIDTH);
+		enemies[i].y = (rand()%HEIGHT);
+
+		if(level_map[enemies[i].x][enemies[i].y].type !=EMPTY) goto bad;
+
+		level_map[enemies[i].x][enemies[i].y].type = ENEMY;
+		level_map[enemies[i].x][enemies[i].y].whichfoe = &enemies[i];
+		enemies[i].awake=0;
+		enemies[i].health=1;
+		enemies[i].damage=1;
+	}
 	// returns num of enemies made
-	return 1;
+	return count;
 }
 
 // This only updates the map, the enemy still needs to be printed

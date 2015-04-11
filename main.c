@@ -10,19 +10,19 @@
 
 
 int attack(player_t *player,enemy_t *enemy){
-	 if(rand()%2==0){
+	 if(rand()%3==0){
 		 player_health(player,enemy->damage);
-	 }else{
+	 }
+	 if(rand()%3==0){
 		 enemy_health(enemy,player->damage);
 	 }
-	 if(player->health==0){
+	 if(player->health<=0){
 		return -1;
-	 }else if(enemy->health==0){
+	 }else if(enemy->health<=0){
 		return 1;
 	 }else{
 		return 0;
 	 }
-
 }
 
 void update_attack(thing_t *tile,player_t *player,enemy_t *enemy,int *numfoes){
@@ -38,6 +38,7 @@ void update_attack(thing_t *tile,player_t *player,enemy_t *enemy,int *numfoes){
 }
 
 int main(){
+	int ladderx,laddery;
 	thing_t level_map[WIDTH][HEIGHT];
 	enemy_t enemies[MAXFOES];
 	player_t me;
@@ -49,8 +50,10 @@ int main(){
 	me.x = 1;
 	me.y = 1;
 	me.health = 3;
+	me.damage=2;
 
 	initscr();
+newlevel:
 	clear();
 	noecho();
 	cbreak();
@@ -61,8 +64,23 @@ int main(){
 	// ncurses setup stuff
 	erg_win = newwin(HEIGHT, WIDTH, 0, 0);
 	keypad(erg_win, TRUE);
-
 	gen_map(level_map); // Generate a level
+
+	// Random player location
+bad:
+	me.x = (rand()%WIDTH);
+	me.y = (rand()%HEIGHT);
+	if(level_map[me.x][me.y].type !=EMPTY) goto bad;
+	
+alsobad:
+	ladderx = (rand()%WIDTH);
+	laddery = (rand()%HEIGHT);
+	if(level_map[ladderx][laddery].type !=EMPTY) goto alsobad;
+	level_map[ladderx][laddery].type = LADDER;
+
+	level_map[me.x][me.y].type = ME;
+	
+	
 	numfoes = gen_enemies(level_map, enemies); // Generate enemies
 	print_map(erg_win, level_map);
 
@@ -72,49 +90,69 @@ int main(){
 	while(1){	
 		c = wgetch(erg_win);
 		srand(time(NULL));
+		if(me.health <= 0) return 0;
 		switch(c)
 		{	case KEY_UP:
 				if(me.y>0){
 					if(level_map[me.x][me.y-1].type == ENEMY){
 						update_attack(&level_map[me.x][me.y-1],&me,level_map[me.x][me.y-1].whichfoe,&numfoes);
-						//attack(&me,level_map[me.x][me.y-1].whichfoe);
+					}
+					if(level_map[me.x][me.y-1].type == LADDER){
+						goto newlevel;
 					}
 					if(level_map[me.x][me.y-1].type == EMPTY){
 						print_thing(erg_win, me.x, me.y,' ');
+						level_map[me.x][me.y].type = EMPTY;
 						me.y--;
+						level_map[me.x][me.y].type = ME;
 					}
 				}
 				break;
 			case KEY_DOWN:
 				if(me.y<HEIGHT-1){
 					if(level_map[me.x][me.y+1].type == ENEMY){
-						 attack(&me,level_map[me.x][me.y+1].whichfoe);
+						update_attack(&level_map[me.x][me.y+1],&me,level_map[me.x][me.y+1].whichfoe,&numfoes);
+					}
+					if(level_map[me.x][me.y+1].type == LADDER){
+						goto newlevel;
 					}
 					if((level_map[me.x][me.y+1].type == EMPTY)){
 						print_thing(erg_win, me.x, me.y,' ');
+						level_map[me.x][me.y].type = EMPTY;
 						me.y++;
+						level_map[me.x][me.y].type = ME;
 					}
 				}
 				break;
 			case KEY_LEFT:
 				if(me.x>0){
 					if(level_map[me.x-1][me.y].type == ENEMY){
-						 attack(&me,level_map[me.x-1][me.y].whichfoe);
+						update_attack(&level_map[me.x-1][me.y],&me,level_map[me.x-1][me.y].whichfoe,&numfoes);
+					}
+					if(level_map[me.x-1][me.y].type == LADDER){
+						goto newlevel;
 					}
 					if((level_map[me.x-1][me.y].type == EMPTY)){
 						print_thing(erg_win, me.x, me.y,' ');
+						level_map[me.x][me.y].type = EMPTY;
 						me.x--;
+						level_map[me.x][me.y].type = ME;
 					}
 				}
 				break;
 			case KEY_RIGHT:
 				if(me.y<WIDTH){
 					if(level_map[me.x+1][me.y].type == ENEMY){
-						 attack(&me,level_map[me.x+1][me.y].whichfoe);
+						update_attack(&level_map[me.x+1][me.y],&me,level_map[me.x+1][me.y].whichfoe,&numfoes);
+					}
+					if(level_map[me.x+1][me.y].type == LADDER){
+						goto newlevel;
 					}
 					if((level_map[me.x+1][me.y].type == EMPTY) && (me.y<WIDTH)){
 						print_thing(erg_win, me.x, me.y,' ');
+						level_map[me.x][me.y].type = EMPTY;
 						me.x++;
+						level_map[me.x][me.y].type = ME;
 					}
 				}
 				break;

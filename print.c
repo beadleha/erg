@@ -13,6 +13,9 @@ void print_map(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT]){
 			if (ROCK == level_map[i][j].type){
 				print_thing(erg_win, i, j,'*');
 			}
+			if (LADDER == level_map[i][j].type){
+				print_thing(erg_win, i, j,'L');
+			}
 		}
 	}
 	wrefresh(erg_win);
@@ -23,7 +26,9 @@ void print_beings(WINDOW *erg_win, player_t me, enemy_t * enemies, int numfoes){
 	// Print Enemies
 	attron(COLOR_PAIR(2));
 	for(i=0;i<numfoes;i++){
-		print_thing(erg_win, enemies[i].x, enemies[i].y,'E');
+		if(enemies[i].health > 0){
+			print_thing(erg_win, enemies[i].x, enemies[i].y,'E');
+		}
 	}
 
 	// Print Player
