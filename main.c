@@ -27,14 +27,15 @@ int attack(player_t *player,enemy_t *enemy){
 
 void update_attack(thing_t *tile,player_t *player,enemy_t *enemy,int *numfoes){
 	if(attack(player,enemy)==-1){
-		mvprintw(25, 1, "YOU ARE DEAD");		
+		mvprintw(25, 1, "YOU ARE DEAD                     ");		
 	}else if(attack(player,enemy)==1){
-		mvprintw(25, 1, "ENEMY IS DEAD");
+		mvprintw(25, 1, "ENEMY IS DEAD                    ");
 		tile->type=EMPTY;
 		*numfoes--;
 	}else{
 		 mvprintw(25, 1, "NOBODY DIED Enemy %d Player %d",enemy->health,player->health);
 	}
+	mvprintw(24, 1, "Press q to quit. Health:%d",player->health); // This needs a refresh() before it displays
 }
 
 int main(){
@@ -84,13 +85,13 @@ alsobad:
 	numfoes = gen_enemies(level_map, enemies); // Generate enemies
 	print_map(erg_win, level_map);
 
-	mvprintw(24, 1, "Press q to quit"); // This needs a refresh() before it displays
+	mvprintw(24, 1, "Press q to quit. Health:%d",me.health); // This needs a refresh() before it displays
 	print_beings(erg_win, me, enemies, numfoes);
 	int num;
 	while(1){	
 		c = wgetch(erg_win);
 		srand(time(NULL));
-		if(me.health <= 0) return 0;
+		if(me.health <= 0) goto quit;
 		switch(c)
 		{	case KEY_UP:
 				if(me.y>0){
@@ -167,6 +168,7 @@ alsobad:
 		//Print player and enemies
 		print_beings(erg_win, me, enemies, numfoes);
 	}	
+quit:
 	clrtoeol();
 	refresh();
 	endwin();

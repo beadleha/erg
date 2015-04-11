@@ -26,51 +26,44 @@ void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 	top= 1 + rand()%7;
 	right= 1 + left+1;
 	bottom=top+1;
-	for(i=numrooms;i>0;i--){
+	for(i=0;i<numrooms;i++){
 		right += left + 1 + (rand()%10);
-		if (right >= WIDTH-1){
+		if (right >= WIDTH-1){ // Start new row
 			top = bottom + (rand()%10);
 			left = 1 + (rand()%10);
 			right = left + 1 + (rand()%10);
 		}
 		bottom = top + 1 + (rand()%5); 
 		if(bottom >= HEIGHT-1) goto CONSIDERED_HARMFUL;
-		roomlist[numrooms-1].top = top;
-		roomlist[numrooms-1].bottom = bottom;
-		roomlist[numrooms-1].left = left;
-		roomlist[numrooms-1].right = right;
-		roomlist[numrooms-1].connected = 0;
+		roomlist[i].top = top;
+		roomlist[i].bottom = bottom;
+		roomlist[i].left = left;
+		roomlist[i].right = right;
+		roomlist[i].connected = 0;
+
 		fillroom(level_map, left, top, right, bottom);
 
 		left = right + 1 + (rand()%10);
 	}
 
 	CONSIDERED_HARMFUL:
+	allconnected = 0;
 	while(allconnected == 0){
+		allconnected = 1;
+
 		// Randomly connect rooms
-		//room1 = rand()%numrooms;
-		//room2 = rand()%numrooms;
-		//connect(level_map, roomlist[room1].bottom, roomlist[room1].right, roomlist[room2].bottom, roomlist[room2].right);
-		//roomlist[room1].connected = 1;
-		//roomlist[room2].connected = 1;
+		room1 = rand()%numrooms;
+		room2 = rand()%numrooms;
+		connect(level_map, roomlist[room1].right, roomlist[room1].bottom, roomlist[room2].right, roomlist[room2].bottom);
+		roomlist[room1].connected = 1;
+		roomlist[room2].connected = 1;
 
 		// Cycle and check if any are not connected
 		for(i=0;i<numrooms;i++){
-			room1 = rand()%numrooms;
-			room2 = rand()%numrooms;
-			connect(level_map, roomlist[room1].bottom, roomlist[room1].right, roomlist[room2].bottom, roomlist[room2].right);
-			//if(roomlist[i].connected == 0) allconnected=0;
-			roomlist[room1].connected=1;
-			roomlist[room2].connected=1;
-		}
-		for(i=0;i<numrooms;i++){
 			if(roomlist[i].connected==0){
-				break;
-			}else{
-				allconnected=1;
+				allconnected=0;
 			}
 		}
-
 	}
 }
 
@@ -84,18 +77,17 @@ void fillroom(thing_t level_map[WIDTH][HEIGHT], int x1, int y1, int x2, int y2){
 }
 
 void connect(thing_t level_map[WIDTH][HEIGHT], int x1, int y1, int x2, int y2){
-	mvprintw(25, 1, "connecting");
 	int i,j;
-	while(x1!=x2 && y1!=y2){
+	while(x1!=x2 | y1!=y2){
 		if(x1<x2){
 			x1++;
-		}else{
+		}else if(x1>x2){
 			x1--;
 		}
 		level_map[x1][y1].type=EMPTY;
 		if(y1<y2){
-			 y1++;
-		}else{
+			y1++;
+		}else if(y1>y2){
 			y1--;
 		}
 		level_map[x1][y1].type=EMPTY;
