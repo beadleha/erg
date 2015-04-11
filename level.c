@@ -69,9 +69,14 @@ void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 
 void fillroom(thing_t level_map[WIDTH][HEIGHT], int x1, int y1, int x2, int y2){
 	int i,j;
+	srand(time());
 	for(i=x1;i<=x2;i++){
 		for(j=y1;j<=y2;j++){
-			level_map[i][j].type = EMPTY;
+			if(rand()%100==0){
+				level_map[i][j].type = POTION;
+			}else{
+				level_map[i][j].type = EMPTY;	
+			}
 		}
 	}
 }

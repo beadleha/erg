@@ -54,6 +54,7 @@ int main(){
 	me.damage=2;
 
 	initscr();
+	noecho();
 newlevel:
 	clear();
 	noecho();
@@ -101,6 +102,13 @@ alsobad:
 					if(level_map[me.x][me.y-1].type == LADDER){
 						goto newlevel;
 					}
+					if(level_map[me.x][me.y-1].type==POTION){
+						print_thing(erg_win, me.x, me.y,' ');
+						me.health+=1;
+						me.y--;
+						level_map[me.x][me.y].type = EMPTY;
+						mvprintw(24, 1, "Press q to quit. Health:%d",me.health);
+					} 
 					if(level_map[me.x][me.y-1].type == EMPTY){
 						print_thing(erg_win, me.x, me.y,' ');
 						level_map[me.x][me.y].type = EMPTY;
@@ -117,6 +125,13 @@ alsobad:
 					if(level_map[me.x][me.y+1].type == LADDER){
 						goto newlevel;
 					}
+					if(level_map[me.x][me.y+1].type==POTION){
+						print_thing(erg_win, me.x, me.y,' ');
+						me.health+=1;
+						me.y++;
+						level_map[me.x][me.y].type = EMPTY;
+						mvprintw(24, 1, "Press q to quit. Health:%d",me.health);
+					} 
 					if((level_map[me.x][me.y+1].type == EMPTY)){
 						print_thing(erg_win, me.x, me.y,' ');
 						level_map[me.x][me.y].type = EMPTY;
@@ -133,6 +148,13 @@ alsobad:
 					if(level_map[me.x-1][me.y].type == LADDER){
 						goto newlevel;
 					}
+					if(level_map[me.x-1][me.y].type==POTION){
+						print_thing(erg_win, me.x, me.y,' ');
+						me.health+=1;
+						me.x--;
+						level_map[me.x][me.y].type = EMPTY;
+						mvprintw(24, 1, "Press q to quit. Health:%d",me.health);
+					}  
 					if((level_map[me.x-1][me.y].type == EMPTY)){
 						print_thing(erg_win, me.x, me.y,' ');
 						level_map[me.x][me.y].type = EMPTY;
@@ -148,6 +170,13 @@ alsobad:
 					}
 					if(level_map[me.x+1][me.y].type == LADDER){
 						goto newlevel;
+					}
+					if(level_map[me.x+1][me.y].type==POTION){
+						print_thing(erg_win, me.x, me.y,' ');
+						me.health+=1;
+						me.x++;
+						level_map[me.x][me.y].type = EMPTY;
+						mvprintw(24, 1, "Press q to quit. Health:%d",me.health);
 					}
 					if((level_map[me.x+1][me.y].type == EMPTY) && (me.y<WIDTH)){
 						print_thing(erg_win, me.x, me.y,' ');

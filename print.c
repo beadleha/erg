@@ -16,6 +16,10 @@ void print_map(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT]){
 			if (LADDER == level_map[i][j].type){
 				print_thing(erg_win, i, j,'L');
 			}
+			if (POTION == level_map[i][j].type){
+				print_thing(erg_win, i, j,'P');
+			}
+
 		}
 	}
 	wrefresh(erg_win);

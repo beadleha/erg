@@ -8,6 +8,7 @@ typedef struct{
 		ENEMY,
 		ME,
 		LADDER,
+		POTION,
 	} type;
 	enemy_t *whichfoe;
 }thing_t;
