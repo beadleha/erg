@@ -38,6 +38,7 @@ void update_attack(thing_t *tile,player_t *player,enemy_t *enemy,int *numfoes){
 }
 
 int main(){
+	int ladderx,laddery;
 	thing_t level_map[WIDTH][HEIGHT];
 	enemy_t enemies[MAXFOES];
 	player_t me;
@@ -52,6 +53,7 @@ int main(){
 	me.damage=2;
 
 	initscr();
+newlevel:
 	clear();
 	noecho();
 	cbreak();
@@ -62,7 +64,6 @@ int main(){
 	// ncurses setup stuff
 	erg_win = newwin(HEIGHT, WIDTH, 0, 0);
 	keypad(erg_win, TRUE);
-
 	gen_map(level_map); // Generate a level
 
 	// Random player location
@@ -71,6 +72,12 @@ bad:
 	me.y = (rand()%HEIGHT);
 	if(level_map[me.x][me.y].type !=EMPTY) goto bad;
 	
+alsobad:
+	ladderx = (rand()%WIDTH);
+	laddery = (rand()%HEIGHT);
+	if(level_map[ladderx][laddery].type !=EMPTY) goto alsobad;
+	level_map[ladderx][laddery].type = LADDER;
+
 	level_map[me.x][me.y].type = ME;
 	
 	
@@ -89,7 +96,9 @@ bad:
 				if(me.y>0){
 					if(level_map[me.x][me.y-1].type == ENEMY){
 						update_attack(&level_map[me.x][me.y-1],&me,level_map[me.x][me.y-1].whichfoe,&numfoes);
-						//attack(&me,level_map[me.x][me.y-1].whichfoe);
+					}
+					if(level_map[me.x][me.y-1].type == LADDER){
+						goto newlevel;
 					}
 					if(level_map[me.x][me.y-1].type == EMPTY){
 						print_thing(erg_win, me.x, me.y,' ');
@@ -104,6 +113,9 @@ bad:
 					if(level_map[me.x][me.y+1].type == ENEMY){
 						update_attack(&level_map[me.x][me.y+1],&me,level_map[me.x][me.y+1].whichfoe,&numfoes);
 					}
+					if(level_map[me.x][me.y+1].type == LADDER){
+						goto newlevel;
+					}
 					if((level_map[me.x][me.y+1].type == EMPTY)){
 						print_thing(erg_win, me.x, me.y,' ');
 						level_map[me.x][me.y].type = EMPTY;
@@ -117,6 +129,9 @@ bad:
 					if(level_map[me.x-1][me.y].type == ENEMY){
 						update_attack(&level_map[me.x-1][me.y],&me,level_map[me.x-1][me.y].whichfoe,&numfoes);
 					}
+					if(level_map[me.x-1][me.y].type == LADDER){
+						goto newlevel;
+					}
 					if((level_map[me.x-1][me.y].type == EMPTY)){
 						print_thing(erg_win, me.x, me.y,' ');
 						level_map[me.x][me.y].type = EMPTY;
@@ -129,6 +144,9 @@ bad:
 				if(me.y<WIDTH){
 					if(level_map[me.x+1][me.y].type == ENEMY){
 						update_attack(&level_map[me.x+1][me.y],&me,level_map[me.x+1][me.y].whichfoe,&numfoes);
+					}
+					if(level_map[me.x+1][me.y].type == LADDER){
+						goto newlevel;
 					}
 					if((level_map[me.x+1][me.y].type == EMPTY) && (me.y<WIDTH)){
 						print_thing(erg_win, me.x, me.y,' ');

@@ -13,6 +13,9 @@ void print_map(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT]){
 			if (ROCK == level_map[i][j].type){
 				print_thing(erg_win, i, j,'*');
 			}
+			if (LADDER == level_map[i][j].type){
+				print_thing(erg_win, i, j,'L');
+			}
 		}
 	}
 	wrefresh(erg_win);

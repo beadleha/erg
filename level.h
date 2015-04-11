@@ -7,6 +7,7 @@ typedef struct{
 		ROCK,
 		ENEMY,
 		ME,
+		LADDER,
 	} type;
 	enemy_t *whichfoe;
 }thing_t;
