@@ -111,12 +111,13 @@ alsobad:
 						goto newlevel;
 					}
 					if(level_map[me.x][me.y-1].type==POTION){
+						level_map[me.x][me.y].type=EMPTY;
 						print_thing(erg_win, me.x, me.y,' ');
 						me.health+=1;
 						me.y--;
-						level_map[me.x][me.y].type = EMPTY;
+						level_map[me.x][me.y].type = ME;
 						mvprintw(24, 1, "Press q to quit. Health:%d",me.health);
-					} 
+					}else 
 					if(level_map[me.x][me.y-1].type == EMPTY){
 						print_thing(erg_win, me.x, me.y,' ');
 						level_map[me.x][me.y].type = EMPTY;
@@ -134,12 +135,13 @@ alsobad:
 						goto newlevel;
 					}
 					if(level_map[me.x][me.y+1].type==POTION){
+						level_map[me.x][me.y].type=EMPTY;
 						print_thing(erg_win, me.x, me.y,' ');
 						me.health+=1;
 						me.y++;
-						level_map[me.x][me.y].type = EMPTY;
+						level_map[me.x][me.y].type = ME;
 						mvprintw(24, 1, "Press q to quit. Health:%d",me.health);
-					} 
+					}else 
 					if((level_map[me.x][me.y+1].type == EMPTY)){
 						print_thing(erg_win, me.x, me.y,' ');
 						level_map[me.x][me.y].type = EMPTY;
@@ -157,12 +159,13 @@ alsobad:
 						goto newlevel;
 					}
 					if(level_map[me.x-1][me.y].type==POTION){
+						level_map[me.x][me.y].type=EMPTY;
 						print_thing(erg_win, me.x, me.y,' ');
 						me.health+=1;
 						me.x--;
-						level_map[me.x][me.y].type = EMPTY;
+						level_map[me.x][me.y].type = ME;
 						mvprintw(24, 1, "Press q to quit. Health:%d",me.health);
-					}  
+					}else  
 					if((level_map[me.x-1][me.y].type == EMPTY)){
 						print_thing(erg_win, me.x, me.y,' ');
 						level_map[me.x][me.y].type = EMPTY;
@@ -180,12 +183,13 @@ alsobad:
 						goto newlevel;
 					}
 					if(level_map[me.x+1][me.y].type==POTION){
+						level_map[me.x][me.y].type=EMPTY;
 						print_thing(erg_win, me.x, me.y,' ');
 						me.health+=1;
 						me.x++;
-						level_map[me.x][me.y].type = EMPTY;
+						level_map[me.x][me.y].type = ME;
 						mvprintw(24, 1, "Press q to quit. Health:%d",me.health);
-					}
+					}else
 					if((level_map[me.x+1][me.y].type == EMPTY) && (me.y<WIDTH)){
 						print_thing(erg_win, me.x, me.y,' ');
 						level_map[me.x][me.y].type = EMPTY;
