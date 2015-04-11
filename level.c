@@ -1,40 +1,58 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "print.h"
 #include "level.h"
+#include "room.h"
 
 void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 	int i,j;
 	int left, top;
 	int right, bottom;
-	int numrooms = 3 + (rand() % 2);
+	int numrooms;
+	int allconnected=0;
+	room_t * roomlist;
 	srand(time());
 
 	for(i=0;i<WIDTH;i++){
 		for(j=0;j<HEIGHT;j++){
 			level_map[i][j].type = ROCK;
-			if(0==i)
-				level_map[i][j].type = ROCK;
-			if(0==j)
-				level_map[i][j].type = ROCK;
-			if((WIDTH-1)==i)
-				level_map[i][j].type = ROCK;
-			if((HEIGHT-1)==j)
-				level_map[i][j].type = ROCK;
 		}
 	}
 
-	numrooms=2;
-	left=1;
-	top=1;
-	right=1;
-	bottom=1;
+	numrooms = 5 + (rand()%5);
+	roomlist = malloc(numrooms * sizeof(room_t));
+	left=rand()%14;
+	top= 1 + rand()%7;
+	right= 1 + left+1;
+	bottom=top+1;
 	for(i=numrooms;i>0;i--){
 		right += left + 1 + (rand()%10);
-		bottom = 2+(rand()%5); 
-		printf("Filling to %d,%d\n",right,bottom);
+		if (right >= WIDTH-1){
+			top = bottom + (rand()%10);
+			left = 1 + (rand()%10);
+			right = left + 1 + (rand()%10);
+		}
+		bottom = top + 1 + (rand()%5); 
+		if(bottom >= HEIGHT-1) goto CONSIDERED_HARMFUL;
+		roomlist[numrooms-1].top = top;
+		roomlist[numrooms-1].bottom = bottom;
+		roomlist[numrooms-1].left = left;
+		roomlist[numrooms-1].right = right;
 		fillroom(level_map, left, top, right, bottom);
 
-		left += right + 1 + (rand()%10);
+		left = right + 1 + (rand()%10);
+	}
+
+	CONSIDERED_HARMFUL:
+	while(allconnected = 0){
+		// Randomly connect rooms that are not connected
+		connect(level_map, top, left, top, left);
+
+		// Cycle and check if any are not connected
+		allconnected = 1;
+		for(i=0;i<numrooms;i++){
+			if(roomlist[i].connected = 0) allconnected=0;
+		}
 	}
 }
 
@@ -42,12 +60,12 @@ void fillroom(thing_t level_map[WIDTH][HEIGHT], int x1, int y1, int x2, int y2){
 	int i,j;
 	for(i=x1;i<=x2;i++){
 		for(j=y1;j<=y2;j++){
-			printf("Filling %d,%d\n",i,j);
 			level_map[i][j].type = EMPTY;
 		}
 	}
 }
 
 void connect(thing_t level_map[WIDTH][HEIGHT], int x1, int y1, int x2, int y2){
+	
 }
 
