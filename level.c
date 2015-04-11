@@ -46,9 +46,7 @@ void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 	}
 
 	CONSIDERED_HARMFUL:
-	while(allconnected = 0){
-		allconnected = 1;
-
+	while(allconnected == 0){
 		// Randomly connect rooms
 		//room1 = rand()%numrooms;
 		//room2 = rand()%numrooms;
@@ -61,8 +59,18 @@ void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 			room1 = rand()%numrooms;
 			room2 = rand()%numrooms;
 			connect(level_map, roomlist[room1].bottom, roomlist[room1].right, roomlist[room2].bottom, roomlist[room2].right);
-			if(roomlist[i].connected == 0) allconnected=0;
+			//if(roomlist[i].connected == 0) allconnected=0;
+			roomlist[room1].connected=1;
+			roomlist[room2].connected=1;
 		}
+		for(i=0;i<numrooms;i++){
+			if(roomlist[i].connected==0){
+				break;
+			}else{
+				allconnected=1;
+			}
+		}
+
 	}
 }
 
@@ -76,7 +84,21 @@ void fillroom(thing_t level_map[WIDTH][HEIGHT], int x1, int y1, int x2, int y2){
 }
 
 void connect(thing_t level_map[WIDTH][HEIGHT], int x1, int y1, int x2, int y2){
-	
-
+	mvprintw(25, 1, "connecting");
+	int i,j;
+	while(x1!=x2 && y1!=y2){
+		if(x1<x2){
+			x1++;
+		}else{
+			x1--;
+		}
+		level_map[x1][y1].type=EMPTY;
+		if(y1<y2){
+			 y1++;
+		}else{
+			y1--;
+		}
+		level_map[x1][y1].type=EMPTY;
+	}
 }
 
