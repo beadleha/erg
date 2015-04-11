@@ -9,6 +9,7 @@ void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 	int left, top;
 	int right, bottom;
 	int numrooms;
+	int room1, room2;
 	int allconnected=0;
 	room_t * roomlist;
 	srand(time());
@@ -38,6 +39,7 @@ void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 		roomlist[numrooms-1].bottom = bottom;
 		roomlist[numrooms-1].left = left;
 		roomlist[numrooms-1].right = right;
+		roomlist[numrooms-1].connected = 0;
 		fillroom(level_map, left, top, right, bottom);
 
 		left = right + 1 + (rand()%10);
@@ -45,11 +47,16 @@ void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 
 	CONSIDERED_HARMFUL:
 	while(allconnected = 0){
-		// Randomly connect rooms that are not connected
-		connect(level_map, top, left, top, left);
+		allconnected = 1;
+
+		// Randomly connect rooms
+		room1 = rand()%numrooms;
+		room2 = rand()%numrooms;
+		connect(level_map, roomlist[room1].bottom, roomlist[room1].right, roomlist[room2].bottom, roomlist[room2].right);
+		roomlist[room1].connected = 1;
+		roomlist[room2].connected = 1;
 
 		// Cycle and check if any are not connected
-		allconnected = 1;
 		for(i=0;i<numrooms;i++){
 			if(roomlist[i].connected = 0) allconnected=0;
 		}
