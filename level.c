@@ -9,12 +9,8 @@ void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 	int left, top;
 	int right, bottom;
 	int numrooms;
-<<<<<<< HEAD
-	int allconnected=1;
-=======
 	int room1, room2;
 	int allconnected=0;
->>>>>>> 7face2c1eef29be20f1ac5bf53827a1ba7983392
 	room_t * roomlist;
 	srand(time());
 
@@ -51,33 +47,20 @@ void gen_map(thing_t level_map[WIDTH][HEIGHT]){
 
 	CONSIDERED_HARMFUL:
 	while(allconnected = 0){
-<<<<<<< HEAD
-		// Randomly connect rooms that are not connected
-		int room1,room2,j;
-		for(i=1;i<numrooms;i++){
-			room1=(rand()%numrooms)-1;
-			room2=(rand()%numrooms)-1;
-			if(roomlist[room1].connected && roomlist[room2].connected == 0) continue;
-			if(roomlist[room1].top<roomlist[room2].top){
-				j=roomlist[room1].top;
-			}
-			for(j;j<roomlist[room2].top;j++){
-				level_map[roomlist[room1].top][j].type=EMPTY;
-			}
-		} 
-=======
 		allconnected = 1;
 
 		// Randomly connect rooms
-		room1 = rand()%numrooms;
-		room2 = rand()%numrooms;
-		connect(level_map, roomlist[room1].bottom, roomlist[room1].right, roomlist[room2].bottom, roomlist[room2].right);
-		roomlist[room1].connected = 1;
-		roomlist[room2].connected = 1;
+		//room1 = rand()%numrooms;
+		//room2 = rand()%numrooms;
+		//connect(level_map, roomlist[room1].bottom, roomlist[room1].right, roomlist[room2].bottom, roomlist[room2].right);
+		//roomlist[room1].connected = 1;
+		//roomlist[room2].connected = 1;
 
->>>>>>> 7face2c1eef29be20f1ac5bf53827a1ba7983392
 		// Cycle and check if any are not connected
 		for(i=0;i<numrooms;i++){
+			room1 = rand()%numrooms;
+			room2 = rand()%numrooms;
+			connect(level_map, roomlist[room1].bottom, roomlist[room1].right, roomlist[room2].bottom, roomlist[room2].right);
 			if(roomlist[i].connected == 0) allconnected=0;
 		}
 	}
@@ -94,5 +77,6 @@ void fillroom(thing_t level_map[WIDTH][HEIGHT], int x1, int y1, int x2, int y2){
 
 void connect(thing_t level_map[WIDTH][HEIGHT], int x1, int y1, int x2, int y2){
 	
+
 }
 
