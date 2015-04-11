@@ -3,6 +3,8 @@
 #include "enemies.h"
 
 
+
+
 int gen_enemies(thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES]){
 	level_map[10][10].type = ENEMY;
 	level_map[10][10].whichfoe = &enemies[0];
@@ -35,3 +37,7 @@ void move_enemies(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT], enemy_t ene
 	}
 }
 
+
+void enemy_health(enemy_t *enemy,int damage){
+	enemy->health-=damage;
+}
