@@ -31,7 +31,6 @@ void update_attack(thing_t *tile,player_t *player,enemy_t *enemy,int *numfoes){
 	}else if(attack(player,enemy)==1){
 		mvprintw(25, 1, "ENEMY IS DEAD                    ");
 		tile->type=EMPTY;
-		*numfoes--;
 	}else{
 		 mvprintw(25, 1, "NOBODY DIED Enemy %d Player %d",enemy->health,player->health);
 	}
@@ -43,6 +42,7 @@ int main(){
 	thing_t level_map[WIDTH][HEIGHT];
 	enemy_t enemies[MAXFOES];
 	player_t me;
+	int i;
 
 	WINDOW *erg_win;
 	int c;
@@ -90,6 +90,14 @@ alsobad:
 	print_beings(erg_win, me, enemies, numfoes);
 	int num;
 	while(1){	
+
+
+		// HACK
+		for(i=0;i<numfoes;i++){
+			if(enemies[i].health <= 0){
+				level_map[enemies[i].x][enemies[i].y].type = EMPTY;
+			}
+		}
 		c = wgetch(erg_win);
 		srand(time(NULL));
 		if(me.health <= 0) goto quit;
