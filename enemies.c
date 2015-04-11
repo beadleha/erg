@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include "print.h"
 #include "enemies.h"
 
@@ -27,23 +28,42 @@ bad:
 	return count;
 }
 
+void change_tile(WINDOW *erg_win,thing_t *oldtile,thing_t *newtile,enemy_t *enemy){
+	oldtile->type=EMPTY;
+	oldtile->whichfoe=NULL;
+	newtile->type=ENEMY;
+	newtile->whichfoe=enemy;
+	print_thing(erg_win, enemy->x, enemy->y, ' ');
+}
+
+
 // This only updates the map, the enemy still needs to be printed
-void move_enemies(WINDOW *erg_win, thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES], int numfoes){
+void move_enemies(WINDOW *erg_win,player_t player,thing_t level_map[WIDTH][HEIGHT], enemy_t enemies[MAXFOES], int numfoes){
 	int i;
 	for(i=0;i<numfoes;i++){
-		if(level_map[enemies[i].x+1][enemies[i].y].type == EMPTY){
-
+		if(player.x>enemies[i].x && level_map[enemies[i].x+1][enemies[i].y].type==EMPTY){
+			
+			change_tile(erg_win,&level_map[enemies[i].x][enemies[i].y],&level_map[enemies[i].x+1][enemies[i].y],&enemies[i]);
 			// Rid old location of enemy data
-			level_map[enemies[i].x][enemies[i].y].type = EMPTY;
-			level_map[enemies[i].x][enemies[i].y].whichfoe = NULL;
+			//level_map[enemies[i].x][enemies[i].y].type = EMPTY;
+			//level_map[enemies[i].x][enemies[i].y].whichfoe = NULL;
 
 			// Visually clear old location
-			print_thing(erg_win, enemies[i].x, enemies[i].y, ' ');
+			//print_thing(erg_win, enemies[i].x, enemies[i].y, ' ');
 			enemies[i].x++;
 
 			// Add enemy data to new location
-			level_map[enemies[i].x][enemies[i].y].type = ENEMY;
-			level_map[enemies[i].x][enemies[i].y].whichfoe = &enemies[i];
+			//level_map[enemies[i].x][enemies[i].y].type = ENEMY;
+			//level_map[enemies[i].x][enemies[i].y].whichfoe = &enemies[i];
+		}else if(player.y > enemies[i].y && level_map[enemies[i].x][enemies[i].y+1].type==EMPTY){
+			change_tile(erg_win,&level_map[enemies[i].x][enemies[i].y],&level_map[enemies[i].x][enemies[i].y+1],&enemies[i]);
+			enemies[i].y++;
+		}else if(player.x < enemies[i].x && level_map[enemies[i].x-1][enemies[i].y].type==EMPTY){
+			change_tile(erg_win,&level_map[enemies[i].x][enemies[i].y],&level_map[enemies[i].x-1][enemies[i].y],&enemies[i]);
+			enemies[i].x--;
+		}else if(player.y < enemies[i].y && level_map[enemies[i].x][enemies[i].y-1].type==EMPTY){
+			change_tile(erg_win,&level_map[enemies[i].x][enemies[i].y],&level_map[enemies[i].x][enemies[i].y-1],&enemies[i]);
+			enemies[i].y--;
 		}
 	}
 }
