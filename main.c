@@ -164,7 +164,7 @@ alsobad:
 				return(0);
 		}
 		// Enemies move
-		move_enemies(erg_win, level_map, enemies, numfoes);
+		move_enemies(erg_win, me, level_map, enemies, numfoes);
 		//Print player and enemies
 		print_beings(erg_win, me, enemies, numfoes);
 	}	
